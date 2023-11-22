@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        #wheel {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: #666;
+            position: relative;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+
+        .number {
+            position: absolute;
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            transform: translate(-50%, -50%);
+        }
+
+        #spinBtn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+    <title>Roulette Game</title>
+</head>
+<body>
+    <div id="wheel"></div>
+    <button id="spinBtn" onclick="spinWheel()">Spin</button>
+    <div id="result"></div>
+
+    <script>
+        // Array representing the numbers on the roulette wheel
+        const numbers = Array.from({ length: 37 }, (_, i) => i);
+
+        // Function to generate a random number between 0 and 36
+        function getRandomNumber() {
+            return Math.floor(Math.random() * 37);
+        }
+
+        // Function to spin the wheel and display the result
+        function spinWheel() {
+            const resultElement = document.getElementById('result');
+            const wheel = document.getElementById('wheel');
+
+            // Disable button during the spin
+            document.getElementById('spinBtn').disabled = true;
+
+            // Generate a random number to simulate the wheel spin
+            const randomNumber = getRandomNumber();
+
+            // Calculate the rotation angle based on the random number
+            const rotationAngle = 360 * (3 + randomNumber) / 37;
+
+            // Apply the rotation to the wheel
+            wheel.style.transition = 'transform 3s ease-out';
+            wheel.style.transform = `rotate(${rotationAngle}deg)`;
+
+            // After the spin animation, display the result
+            setTimeout(() => {
+                resultElement.textContent = `Result: ${randomNumber}`;
+                // Enable the button after the spin is complete
+                document.getElementById('spinBtn').disabled = false;
+            }, 3000);
+        }
+
+        // Create number elements on the wheel
+        const wheel = document.getElementById('wheel');
+        numbers.forEach(number => {
+            const numberElement = document.createElement('div');
+            numberElement.classList.add('number');
+            numberElement.textContent = number;
+            const rotationAngle = 360 * (3 + number) / 37;
+            numberElement.style.transform = `rotate(${rotationAngle}deg) translate(0, -50%)`;
+            wheel.appendChild(numberElement);
+        });
+    </script>
+</body>
+</html>
